@@ -2,6 +2,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import mongoose from 'mongoose'
+import expressListEndpoints from "express-list-endpoints";
 
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/books"
 mongoose.connect(mongoUrl)
@@ -57,9 +58,15 @@ app.use(cors())
 app.use(bodyParser.json())
 
 // Start defining your routes here
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+app.get("/", (req, res) => {
+  const endpoints = expressListEndpoints(app);
+  const documentation = endpoints.map((endpoint) => ({
+    method: endpoint.methods.join(", "),
+    path: endpoint.path,
+  }));
+  res.json(documentation);
+});
+
 
 app.get('/authors', async (req, res) => {
   const authors = await Author.find()
