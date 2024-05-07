@@ -3,6 +3,9 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import mongoose from 'mongoose'
 import expressListEndpoints from "express-list-endpoints";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/books"
 mongoose.connect(mongoUrl)
